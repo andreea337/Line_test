@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:id="@+id/left_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="left"
+        android:paddingTop="20dp"
+        android:paddingLeft="10dp"
+        >
+        <ImageView
+            android:id="@+id/messengerImageView_left"
+            android:src="@drawable/ic_account_circle_black_36dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"/>
+        <TextView
+            android:id="@+id/messageTextView_left"
+            android:layout_width="wrap_content"
+            android:maxWidth="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="10dp"
+            android:padding="10dp"
+            android:background="@drawable/rounded_message_gray"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/black"
+            android:text="This is a message"
+            />
+
+        <TextView
+            android:id="@+id/timeTextView_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:layout_gravity="bottom"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="13:56" />
+    </LinearLayout>
+    <LinearLayout
+        android:id="@+id/right_layout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="right"
+        android:paddingTop="20dp"
+        android:paddingRight="10dp"
+        >
+        <TextView
+            android:id="@+id/timeTextView_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingHorizontal="10dp"
+            android:layout_gravity="bottom"
+            android:textAppearance="?android:attr/textAppearanceSmall"
+            android:text="13:56" />
+        <TextView
+            android:id="@+id/messageTextView_right"
+            android:layout_width="wrap_content"
+            android:maxWidth="250dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="10dp"
+            android:padding="10dp"
+            android:background="@drawable/rounded_message_gray"
+            android:textAppearance="?android:attr/textAppearanceMedium"
+            android:textColor="@android:color/black"
+            android:text="This is a message" />
+
+        <ImageView
+            android:id="@+id/messengerImageView_right"
+            android:src="@drawable/ic_account_circle_black_36dp"
+            android:layout_width="36dp"
+            android:layout_height="36dp"
+            android:layout_gravity="center_vertical"/>
+    </LinearLayout>
+</LinearLayout>
+
+
