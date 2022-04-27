@@ -10,13 +10,17 @@ import java.util.Date;
 public class Msg {
     private String content;
     private String time;
-    public int type;
-    //type 1:receive
-    //type 2:send
-    public Msg(String content, int type){
+    public String name;
+
+    public Msg(String content, String name){
         this.content =content;
-        this.type = type;
+        this.name = name;
         this.time = timeData();
+    }
+    public Msg(String content, String name, String time){
+        this.content =content;
+        this.name = name;
+        this.time = time;
     }
 
     public String getContent() {

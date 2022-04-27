@@ -1,100 +1,93 @@
 package com.example.line;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
-import android.widget.EditText;
 import android.widget.ImageButton;
-import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
-import java.util.List;
-import java.util.ListIterator;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.QueryDocumentSnapshot;
+import com.google.firebase.firestore.QuerySnapshot;
 
 public class MainActivity extends AppCompatActivity {
-
-    ImageView msendButton;
-    EditText mmsgEdt;
-    RecyclerView recyclerView;
-    List<Msg> msgList = new ArrayList<>();
-    private static final String TAG = "DocSnippets";
+    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    private ImageButton mBtn_Login;
+    TextView memail, mpwd;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         itemSetting();
-
-        //set recyclerview
-        recyclerView.setLayoutManager(new LinearLayoutManager(this));
-        RecyclerViewAdapter adapter = new RecyclerViewAdapter(msgList);
-        recyclerView.setAdapter(adapter);
-
-        msendButton.setOnClickListener(new View.OnClickListener() {
+        mBtn_Login.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String content = mmsgEdt.getText().toString();
-                //判斷內容不是空的
-                if(!"".equals(content)){
-                    Msg msg = new Msg(content, 2);
-                    msgList.add(msg);
-                    //更新adapter
-                    adapter.notifyItemInserted(msgList.size()-1);
-                    //要求recyclerView布局将消息刷新
-                    recyclerView.scrollToPosition(msgList.size()-1);
-                    mmsgEdt.setText("");
-                }
+                login();
+            }
+        });
+    }
+    public void login(){
+        db.collection("account")
+                .get()
+                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
+                    @Override
+                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
+                        if(task.isSuccessful()){
+                            for(QueryDocumentSnapshot doc : task.getResult()){
+                                String id = doc.getString("id");
+                                String pwd = doc.getString("pwd");
+                                String name = doc.getString("name");
+                                String id1 = memail.getText().toString().trim();
+                                String pwd1 = mpwd.getText().toString().trim();
+                                if(id.equalsIgnoreCase(id1) & pwd.equalsIgnoreCase(pwd1)) {
+                                    Log.d("tag", "ddddddd");
+//                                    Toast.makeText(MainActivity.this, c + " Welcome", Toast.LENGTH_LONG).show();
+//                                    //-------------------------------------------------------------------------
+                                    Intent select = new Intent(MainActivity.this, SelectUser.class);
+                                    select.putExtra("id", id);
+                                    select.putExtra("name", name);
+                                    startActivity(select);
+                                    break;
+                                }else{
+                                    Toast.makeText(MainActivity.this, "Cannot login,incorrect Email and Password", Toast.LENGTH_SHORT).show();
+                                    runOnUiThread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                            Toast.makeText(MainActivity.this, "My Toast", Toast.LENGTH_SHORT).show();
+                                        }
+                                    });
+                                }
+                            }
+                        }
+                        else{
+                            Toast.makeText(MainActivity.this, "Cannot login,incorrect Email and Password", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                })
+        .addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.d("tag", e.toString());
             }
         });
     }
 
     public void itemSetting(){
-        mmsgEdt = findViewById(R.id.msgEdt);
-        msendButton = findViewById(R.id.sendBtn);
-        recyclerView = findViewById(R.id.messageRecyclerView);
+        mBtn_Login = findViewById(R.id.btn_login);
+        memail = findViewById(R.id.sid);
+        mpwd = findViewById(R.id.pwd);
     }
 }
-
-
-
-
-
-
-//        db.collection("java123")
-//                .get()
-//                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-//                    @Override
-//                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-//                        for(QueryDocumentSnapshot doc : task.getResult()){
-//                            Map<String, Object> data = new HashMap<>();
-//                            data.put("check", doc.get("check"));
-//
-//                            db.collection("初日001").document(doc.getId()).set(data);
-//                            Log.d(TAG, "OK");
-//                        }
-//                    }
-//                });
-
-//        CollectionReference cities = db.collection("students").document("ann").collection("day");
-//        Map<String, Object> data = new HashMap<>();
-//        data.put("database", "DB221");
-////        data.put("日文", "初日011");
-////        data.put("國文", "大一國文5班");
-////        data.put("英文", "進修英文");
-//        data.put("java", "JAVA101");
-////        data.put("python", "PY211");
-//        cities.document("6").set(data);
-//        cities.document("7").set(data);
-//        Log.d(TAG,"OK");
 
 
 
