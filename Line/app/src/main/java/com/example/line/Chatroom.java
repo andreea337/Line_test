@@ -48,6 +48,7 @@ public class Chatroom extends AppCompatActivity {
         Intent intent = getIntent();
         String name = intent.getStringExtra("name");
         String room = intent.getStringExtra("chatroom");
+        String user = intent.getStringExtra("user");
         txtname.setText(name);
 
         //set recyclerview
@@ -55,7 +56,8 @@ public class Chatroom extends AppCompatActivity {
         adapter = new Adapter_chat(msgList, name);
         recyclerView.setAdapter(adapter);
 
-        root = FirebaseDatabase.getInstance().getReference().child(room);
+        //change different room
+        root = FirebaseDatabase.getInstance().getReference().child("andy123_joy");
         msendButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -64,18 +66,16 @@ public class Chatroom extends AppCompatActivity {
                 Map<String, Object> map = new HashMap<String, Object>();
                 temp_key = root.push().getKey();
                 root.updateChildren(map);
-                Log.d("tag","cccccccc");
+
                 //判斷內容不是空的
                 if(!"".equals(content)){
                     //push to realtime
                     Msg msg = new Msg(content, name);
                     DatabaseReference msg_root = root.child(temp_key);
                     msg_root.setValue(msg);
-                    Log.d("tag","ddddddddddd");
                     //更新adapter
                     adapter.notifyDataSetChanged();
                     mmsgEdt.setText("");
-                    Log.d("tag","eeeeeeeeeeee");
                 }
             }
         });
@@ -83,15 +83,12 @@ public class Chatroom extends AppCompatActivity {
         root.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Log.d("tag","aaaaaaaaaaaa");
                 conversation(snapshot);
-                Log.d("tag","------------");
             }
 
             @Override
             public void onChildChanged(@NonNull DataSnapshot snapshot, @Nullable String previousChildName) {
-                Log.d("tag","bbbbbbbbbbbbb");
-                //conversation(snapshot);
+                conversation(snapshot);
             }
 
             @Override
@@ -114,20 +111,20 @@ public class Chatroom extends AppCompatActivity {
     private String mesg, time, user;
     public void conversation(DataSnapshot dataSnapshot){
         Iterator i = dataSnapshot.getChildren().iterator();
-        Log.d("tag",msgList.size()+"");
         while(i.hasNext()){
             mesg = (String) ((DataSnapshot)i.next()).getValue();
             user = (String) ((DataSnapshot)i.next()).getValue();
             time = (String) ((DataSnapshot)i.next()).getValue();
             msgList.add(new Msg(mesg, user, time));
-            Log.d("tag",msgList.size()+"");
         }
-        Log.d("tag","1111111111111");
         //更新adapter
         adapter.notifyDataSetChanged();
         //要求recyclerView布局将消息刷新
         recyclerView.scrollToPosition(msgList.size()-1);
-        Log.d("tag","22222222222222");
+    }
+
+    public void upload_firestore(){
+
     }
 //    public void setRecyclerView(final callback callback){
 //        //set recyclerview

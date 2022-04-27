@@ -84,8 +84,8 @@ public class MainActivity extends AppCompatActivity {
 
     public void itemSetting(){
         mBtn_Login = findViewById(R.id.btn_login);
-        memail = findViewById(R.id.sid);
-        mpwd = findViewById(R.id.pwd);
+        memail = findViewById(R.id.username);
+        mpwd = findViewById(R.id.password);
     }
 }
 

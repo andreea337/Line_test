@@ -31,6 +31,7 @@ public class Adapter_user extends RecyclerView.Adapter<Adapter_user.ViewHolder> 
 
     // 儲存要顯示的資料
     private List<String> stringList;
+    String user_name;
     private DatabaseReference root = FirebaseDatabase.getInstance().getReference().getRoot();
 
     // ViewHolder 是把項目中所有的 View 物件包起來。
@@ -63,6 +64,7 @@ public class Adapter_user extends RecyclerView.Adapter<Adapter_user.ViewHolder> 
                     Intent chat = new Intent(v.getContext(), Chatroom.class);
                     chat.putExtra("name", name);
                     chat.putExtra("chatroom", room);
+                    chat.putExtra("user", user_name);
                     v.getContext().startActivity(chat);
                 }
                 @Override
@@ -76,8 +78,9 @@ public class Adapter_user extends RecyclerView.Adapter<Adapter_user.ViewHolder> 
         }
     }
     // 建構式，用來接收外部程式傳入的項目資料。
-    public Adapter_user(List<String> stringList) {
+    public Adapter_user(List<String> stringList, String user_name) {
         this.stringList = stringList;
+        this.user_name = user_name;
     }
 
     // RecyclerView會呼叫這個方法，我們必須建立好項目的ViewHolder物件，

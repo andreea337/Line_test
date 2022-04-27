@@ -52,7 +52,7 @@ public class SelectUser extends AppCompatActivity {
                             }
                         }
                         //set recyclerview
-                        Adapter_user adapter = new Adapter_user(userList);
+                        Adapter_user adapter = new Adapter_user(userList, name);
                         recyclerView.setAdapter(adapter);
                     }
                 }
