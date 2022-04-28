@@ -8,8 +8,8 @@ import java.util.Date;
  2.消息创建时间
  */
 public class Msg {
-    private String content;
-    private String time;
+    public String content;
+    public String time;
     public String name;
 
     public Msg(String content, String name){
